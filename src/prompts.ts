@@ -7,16 +7,16 @@ import type { Category, Extraction, Judgment, SearchFinding } from "./types";
 
 // ── Stack profile ────────────────────────────────────────────────
 // Used by the repo/tool fit-check playbook. Edit to match your setup.
-// CONFIRMED by the user (verified in a terminal): Windows 10, Node.js v24.18.0,
-// Git present, Python NOT installed.
-// UNCONFIRMED (still assumed — replace before relying on fit-checks): VS Code,
-// cloud plan, and budget line.
+// CONFIRMED by the user (terminal-verified or stated): Windows 10,
+// Node.js v24.18.0, Git present, Python NOT installed, Vercel Pro plan.
+// UNCONFIRMED (still assumed — replace before relying on fit-checks): VS Code.
 export const STACK_PROFILE = `
 Machine "Dalin": Windows 10 desktop. Confirmed installed: Node.js v24.18.0, Git.
 Python is NOT installed — this project needs none (it is TypeScript/React/Vercel);
 flag any tool that requires a Python runtime as a setup cost.
-Assumed pending confirmation: VS Code, Vercel (hobby) plan, free-tier-only budget,
-comfortable with TypeScript/React and REST APIs.
+Hosting: Vercel Pro plan (paid) — willing to pay for hosting/compute, but prefers
+free tiers for add-on model and search APIs (Gemini free tier + Linkup free credit).
+Assumed pending confirmation: VS Code, comfort with TypeScript/React and REST APIs.
 Not running: Docker daemons, Kubernetes, paid GPU instances, macOS-only tooling.
 `.trim();
 
