@@ -39,7 +39,7 @@ export function VerdictPanel({ result, gateOpen, acting, onApprove, onReset }: P
       {meta.searchProvider === "none" && (
         <p className="warn-strip">
           No search key configured — every claim below is <strong>unverified</strong> and
-          confidence is capped accordingly. Add TAVILY_API_KEY or BRAVE_API_KEY to fix this.
+          confidence is capped accordingly. Add LINKUP_API_KEY or TAVILY_API_KEY to fix this.
         </p>
       )}
 

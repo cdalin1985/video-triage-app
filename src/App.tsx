@@ -169,8 +169,8 @@ export default function App() {
       </main>
 
       <footer className="colophon">
-        frames extracted in your browser · tier A: Gemini Flash (Haiku fallback) · search: Tavily /
-        Brave free tier · tier B: Claude Sonnet · ACT fires only on approval
+        frames extracted in your browser · tier A: Gemini Flash (Haiku fallback) · search: Linkup /
+        Tavily free tier · tier B: Claude Sonnet · ACT fires only on approval
       </footer>
     </div>
   );

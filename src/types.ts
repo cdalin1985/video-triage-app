@@ -37,7 +37,7 @@ export interface Judgment {
 
 export interface TriageMeta {
   extractor: "gemini" | "haiku";
-  searchProvider: "tavily" | "brave" | "none";
+  searchProvider: "linkup" | "tavily" | "none";
   searchesRun: number;
 }
 

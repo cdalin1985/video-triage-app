@@ -15,7 +15,7 @@ confidence bar.
 | Stage | Who | Cost |
 |---|---|---|
 | Read frames + caption, classify, write search queries | Gemini Flash (free AI Studio tier) — falls back to Claude Haiku | free / pennies |
-| Verify claims | Tavily (1k/mo free) or Brave (2k/mo free) | free |
+| Verify claims | Linkup ($20/mo recurring credit ≈ 4k searches) → Tavily (1k/mo) fallback | free |
 | Validate, score confidence, write the brief | Claude Sonnet — compact text dossier only, no images | ~1–3¢ |
 | ACT build (post-approval only) | Claude Sonnet | rare by design |
 
@@ -36,6 +36,13 @@ Five category playbooks live in [`src/prompts.ts`](src/prompts.ts):
 - **product** / **content_technique** — plus a product addendum that triggers on
   any category whenever something is being sold.
 
+Search provider chain is Linkup → Tavily → none. Linkup leads because its free
+tier is the most generous in the category as of 2026 — a $20/month recurring
+credit (~4,000 standard searches), no card required — and it returns clean
+LLM-ready snippets rather than raw SERP HTML. Brave was dropped: its free tier
+was discontinued for new signups in early 2026 (card required, silent overage
+billing).
+
 Degradation is honest: no search key → the app runs, tells you flat-out the
 claims are unverified, and caps side-hustle confidence. No Gemini key → Haiku
 reads the frames instead.
@@ -53,7 +60,7 @@ Keys (see `.env.example`):
 
 - `ANTHROPIC_API_KEY` — required (judgment tier)
 - `GEMINI_API_KEY` — free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
-- `TAVILY_API_KEY` — free at [tavily.com](https://tavily.com) (or `BRAVE_API_KEY`)
+- `LINKUP_API_KEY` — free at [linkup.so](https://www.linkup.so) (or `TAVILY_API_KEY` at [tavily.com](https://tavily.com))
 
 ## Deploy
 
