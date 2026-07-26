@@ -8,7 +8,7 @@ import type { Category, Extraction, Judgment, SearchFinding } from "./types";
 // ── Stack profile ────────────────────────────────────────────────
 // Used by the repo/tool fit-check playbook. Edit to match your setup.
 export const STACK_PROFILE = `
-Machine "Dalin": Windows 11 desktop, Node.js 20+, Python 3.12, Git, VS Code.
+Machine "Dalin": Windows 10 desktop, Node.js 20+, Python 3.12, Git, VS Code.
 Comfortable with: TypeScript/React, Vercel serverless, REST APIs, basic Python.
 Cloud: Vercel (hobby), no paid infra budget — free tiers strongly preferred.
 Not running: Docker daemons, Kubernetes, paid GPU instances, macOS-only tooling.
