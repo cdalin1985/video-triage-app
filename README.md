@@ -16,8 +16,8 @@ confidence bar.
 |---|---|---|
 | Read frames + caption, classify, write search queries | Gemini Flash (free AI Studio tier) — falls back to Claude Haiku | free / pennies |
 | Verify claims | Linkup ($20/mo recurring credit ≈ 4k searches) → Tavily (1k/mo) fallback | free |
-| Validate, score confidence, write the brief | Claude Sonnet — compact text dossier only, no images | ~1–3¢ |
-| ACT build (post-approval only) | Claude Sonnet | rare by design |
+| Validate, score confidence, write the brief | OpenAI GPT-5.5 — compact text dossier only, no images | ~5–8¢ |
+| ACT build (post-approval only) | OpenAI GPT-5.5 | rare by design |
 
 Frames are extracted **in your browser** via canvas — the video file never
 touches the server, and nothing server-side ever fetches from the platform the
@@ -58,9 +58,10 @@ vercel dev             # API on :3000 (the Vite proxy points at it)
 
 Keys (see `.env.example`):
 
-- `ANTHROPIC_API_KEY` — required (judgment tier)
+- `OPENAI_API_KEY` — required (judgment tier, GPT-5 series) at [platform.openai.com/api-keys](https://platform.openai.com/api-keys). API billing is separate from a ChatGPT subscription.
 - `GEMINI_API_KEY` — free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
 - `LINKUP_API_KEY` — free at [linkup.so](https://www.linkup.so) (or `TAVILY_API_KEY` at [tavily.com](https://tavily.com))
+- `ANTHROPIC_API_KEY` — optional; only the Haiku extraction fallback uses it, or set `JUDGE_MODEL=claude-...` to route judgment back to Anthropic.
 
 ## Deploy
 

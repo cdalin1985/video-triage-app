@@ -170,7 +170,7 @@ export default function App() {
 
       <footer className="colophon">
         frames extracted in your browser · tier A: Gemini Flash (Haiku fallback) · search: Linkup /
-        Tavily free tier · tier B: Claude Sonnet · ACT fires only on approval
+        Tavily free tier · tier B: OpenAI GPT-5.5 · ACT fires only on approval
       </footer>
     </div>
   );

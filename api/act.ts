@@ -31,7 +31,8 @@ export default async function handler(req: Request): Promise<Response> {
     const deliverable = await runJudge(
       ACT_SYSTEM,
       actUserPrompt(body.extraction, body.judgment, body.context ?? ""),
-      4000,
+      6000,
+      false, // ACT returns markdown, not JSON
     );
     const response: ActResponse = { deliverable };
     return Response.json(response);

@@ -66,7 +66,7 @@ export default async function handler(req: Request): Promise<Response> {
     const rawJudge = await runJudge(
       JUDGE_SYSTEM,
       judgeUserPrompt(extraction, findings, body.context ?? "", provider !== "none"),
-      3000,
+      6000,
     );
     const j = parseModelJson<Partial<Judgment>>(rawJudge);
     const judgment: Judgment = {

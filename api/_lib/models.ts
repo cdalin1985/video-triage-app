@@ -1,6 +1,6 @@
 // Thin fetch clients — no SDK dependencies, keeps the serverless bundle tiny.
 
-const JUDGE_MODEL = process.env.JUDGE_MODEL || "claude-sonnet-5";
+const JUDGE_MODEL = process.env.JUDGE_MODEL || "gpt-5.5";
 const HAIKU_MODEL = process.env.EXTRACT_FALLBACK_MODEL || "claude-haiku-4-5-20251001";
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
@@ -50,6 +50,40 @@ async function anthropicMessage(opts: {
     .filter((b) => b.type === "text")
     .map((b) => b.text ?? "")
     .join("");
+}
+
+async function openaiMessage(opts: {
+  model: string;
+  system: string;
+  user: string;
+  maxTokens: number;
+  expectJson: boolean;
+}): Promise<string> {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) throw new Error("OPENAI_API_KEY is not set");
+  // GPT-5 series quirks (verified): use `max_completion_tokens` — `max_tokens`
+  // is rejected — and do NOT send `temperature`; a non-default value 400s.
+  // The token budget is generous because reasoning tokens count against it;
+  // too small a ceiling can truncate the response to empty.
+  const body: Record<string, unknown> = {
+    model: opts.model,
+    messages: [
+      { role: "system", content: opts.system },
+      { role: "user", content: opts.user },
+    ],
+    max_completion_tokens: opts.maxTokens,
+  };
+  if (opts.expectJson) body.response_format = { type: "json_object" };
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`OpenAI API ${res.status}: ${await res.text()}`);
+  const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+  const text = json.choices?.[0]?.message?.content;
+  if (!text) throw new Error("OpenAI returned no content");
+  return text;
 }
 
 async function geminiVision(input: VisionInput): Promise<string> {
@@ -102,9 +136,23 @@ export async function runExtractor(
   return { text, extractor: "haiku" };
 }
 
-/** Tier B: premium judgment — text-only dossier in, JSON or markdown out. */
-export async function runJudge(system: string, user: string, maxTokens: number): Promise<string> {
-  return anthropicMessage({ model: JUDGE_MODEL, system, user, maxTokens });
+/**
+ * Tier B: premium judgment — text-only dossier in, JSON or markdown out.
+ * Routes by model name: `claude-*` → Anthropic, anything else → OpenAI. Default
+ * is OpenAI gpt-5.5; set JUDGE_MODEL=claude-... to route back to Anthropic with
+ * no code change. `expectJson` toggles OpenAI's JSON response format (the judge
+ * call needs JSON; the ACT call wants free-form markdown).
+ */
+export async function runJudge(
+  system: string,
+  user: string,
+  maxTokens: number,
+  expectJson = true,
+): Promise<string> {
+  if (JUDGE_MODEL.startsWith("claude")) {
+    return anthropicMessage({ model: JUDGE_MODEL, system, user, maxTokens });
+  }
+  return openaiMessage({ model: JUDGE_MODEL, system, user, maxTokens, expectJson });
 }
 
 /** Pulls the first JSON object out of a model response, tolerating code fences. */
