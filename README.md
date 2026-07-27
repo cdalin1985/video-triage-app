@@ -16,8 +16,13 @@ confidence bar.
 |---|---|---|
 | Read frames + caption, classify, write search queries | Gemini Flash (free AI Studio tier) — falls back to Claude Haiku | free / pennies |
 | Verify claims | Linkup ($20/mo recurring credit ≈ 4k searches) → Tavily (1k/mo) fallback | free |
-| Validate, score confidence, write the brief | OpenAI GPT-5.5 — compact text dossier only, no images | ~5–8¢ |
+| Validate, score confidence, write the brief | OpenAI GPT-5.5 — compact text dossier only, no images | est. ~5–15¢* |
 | ACT build (post-approval only) | OpenAI GPT-5.5 | rare by design |
+
+<sub>*Estimate, not measured. GPT-5.5 is $5/1M input, $30/1M output, and its
+reasoning tokens bill as output — so the real per-triage cost varies with how
+much the model reasons. Switching `JUDGE_MODEL` back to `claude-...` was
+cheaper; this is the tradeoff of moving judgment to OpenAI.</sub>
 
 Frames are extracted **in your browser** via canvas — the video file never
 touches the server, and nothing server-side ever fetches from the platform the
